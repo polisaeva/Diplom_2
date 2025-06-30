@@ -2,6 +2,7 @@ package ru.practicum;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
+import ru.practicum.model.User;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;

@@ -63,6 +63,12 @@
             <version>RELEASE</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>net.datafaker</groupId>
+            <artifactId>datafaker</artifactId>
+            <version>1.8.0</version>
+        </dependency>
     </dependencies>
 
     <build>

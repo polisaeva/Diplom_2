@@ -3,21 +3,32 @@ package ru.practicum.test;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
+import net.datafaker.Faker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.practicum.User;
+import ru.practicum.model.User;
 
 import static ru.practicum.ApiUser.*;
 
 public class CreateAUserTest {
     private User user;
     private String accessToken;
+    private Faker faker;
 
 
     @Before
     public void setUp() {
-        user = new User("user22@yandex.ru", "password", "User22");
+        faker = new Faker();
+        user = generateRandomUser();
+    }
+
+    private User generateRandomUser() {
+        return new User(
+                faker.internet().emailAddress(),
+                faker.internet().password(6, 8, true, true, true),
+                faker.name().firstName()
+        );
     }
 
 

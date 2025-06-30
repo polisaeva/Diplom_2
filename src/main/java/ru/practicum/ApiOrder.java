@@ -3,6 +3,7 @@ package ru.practicum;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import ru.practicum.model.Order;
 
 import java.util.List;
 
