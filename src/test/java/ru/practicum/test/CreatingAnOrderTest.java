@@ -4,6 +4,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import net.datafaker.Faker;
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import java.util.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.Matchers.equalTo;
 import static ru.practicum.ApiOrder.sendARequestToCreateAnOrder;
 import static ru.practicum.ApiUser.*;
 import static ru.practicum.ApiUser.checkThatTheResponseIsReturnedWithCode202Accepted;
@@ -106,7 +108,27 @@ public class CreatingAnOrderTest {
                 useAuth ? this.accessToken : null, this.ingredients);
         // 2. Проверить, что ответ возвращается с ожидаемым кодом
         response.then().statusCode(expectedStatusCode);
+
+        if (expectedStatusCode == 200) {
+            response.then()
+                    .body("success", equalTo(true))
+                    .body("name", notNullValue())
+                    .body("order.number", notNullValue());
+        } else if (expectedStatusCode == 401) {
+            response.then()
+                    .body("success", equalTo(false))
+                    .body("message", equalTo("You should be authorised"));
+        } else if (expectedStatusCode == 400) {
+            response.then()
+                    .body("success", equalTo(false))
+                    .body("message", equalTo("Ingredient ids must be provided"));
+        } else if (expectedStatusCode == 500) {
+            response.then()
+                    .body("success", equalTo(false))
+                    .body("message", equalTo("Internal Server Error"));
+        }
     }
+
 
     @After
     //Удаление пользователя из системы
